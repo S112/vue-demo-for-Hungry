@@ -1,10 +1,10 @@
 <template>
 <div class='header'>
+	<!-- 内容区 -->
 	<div class='content-wrapper'>
 		<div class='avatar'>
 			<img width='64' height='64' :src='seller.avatar' />
 		</div>
-		
 		<div class='content'>
 			<div class='title'>
 				<span class='brand'></span>
@@ -21,6 +21,7 @@
 			<i class='icon-keyboard_arrow_right'></i>
 		</div>	
 	</div>
+	<!-- 公告区 -->
 	<div @click='showDetail' class='bulletin-wrapper'>
 		<span class='bulletin-title'></span><!--
 		--><span class='bulletin-text' v-text='seller.bulletin'></span>
@@ -38,7 +39,7 @@
 					<star :size='48' :score='seller.score'></star> <!-- star compoent -->
 				</div>
 				<div class='title'> <!-- flex -->
-					<div class='line'></div>
+					<div class='line'></div> <!-- 若用span,在andorid有bug -->
 					<div class='text'>优惠信息</div>
 					<div class='line'></div>					
 				</div>
@@ -101,6 +102,7 @@ export default {
 	background-color: rgba(7, 17, 27, 0.5)
 	color: #fff
 	overflow: hidden
+	//内容区
 	.content-wrapper
 		position: relative
 		padding: 24px 12px 18px 24px
@@ -152,12 +154,11 @@ export default {
 					&.invoice
 						bg-image('invoice_1')
 					&.special
-						bg-image('special_1')			
+						bg-image('special_1')
 				.text
 					vertical-align: top
 					line-height: 12px;
-					font-size: 10px;
-					
+					font-size: 10px;		
 		.support-count
 			position: absolute
 			right: 12px
@@ -175,6 +176,7 @@ export default {
 				font-size: 10px
 				margin-left: 2px
 				line-height: 24px //base.styl 默认书写是1
+	//公告区
 	.bulletin-wrapper
 		position: relative
 		height: 28px
@@ -209,7 +211,6 @@ export default {
 		height: 100%
 		z-index: -1
 		filter: blur(10px) //图片模糊
-	
 	//浮层 detail
 	.detail
 		position: fixed
@@ -292,8 +293,7 @@ export default {
 					.content
 						padding: 0 12px
 						line-height: 24px
-						font-size: 12px
-							
+						font-size: 12px							
 		.detail-close
 			position: relative
 			width: 32px
