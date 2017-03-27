@@ -14,7 +14,7 @@
 			<li v-for='item in goods' class='food-list food-list-hook'>
 				<h1 class='title' v-text='item.name'></h1>
 				<ul>
-					<li v-for='v in item.foods' class='food-item border-1px'>
+					<li @click='selectFood(v, $event)' v-for='v in item.foods' class='food-item border-1px'>
 						<div class='icon'>
 							<img width='57' :src="v.icon">
 						</div>
@@ -39,17 +39,20 @@
 		</ul>
 	</div>
 	<shopcart :select-foods='selectFoods' :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" v-ref:shop-cart></shopcart>
+	<food :food='selectedFood' v-ref:food></food>
 </div>
 </template>
 
 <script type="text/ecmascript-6">
-import {axios} from '../../global';
+import {axios} from 'common/js/global';
 import BScroll from 'better-scroll';
 import shopcart from 'components/shopcart/shopcart';
 import cartcontrol from 'components/cartcontrol/cartcontrol';
+import food from 'components/food/food';
 const ERR_OK = 0;
 
 export default {
+	name: 'goods',
 	props: {
 		seller: {
 			type: Object
@@ -69,8 +72,6 @@ export default {
 		}).catch((err) => {
 			console.log(err);
 		});
-
-		this.$on('cart.add', this._drop);
 	},
 	data() {
 		return {
@@ -78,7 +79,8 @@ export default {
 			listHeight: [],
 			scrollY: 0,
 			menuScroll: null,
-			foodsScroll: null
+			foodsScroll: null,
+			selectedFood: {}
 		};
 	},
 	computed: {
@@ -119,6 +121,13 @@ export default {
 			let el = foodList[index];
 			this.foodsScroll.scrollToElement(el, 300);
 		},
+		selectFood(food, event) {
+			if (!event._constructed) {  // 解决pc端点击出现两次bug,_constructed是better-scroll自带的,原生不存在
+				return;
+			}
+			this.selectedFood = food;
+			this.$refs['food'].show();
+		},
 		_initScroll() {
 			this.menuScroll = new BScroll(this.$els.menuWrapper, {
 				probeType: 3,
@@ -143,9 +152,15 @@ export default {
 			}
 		}
 	},
+	events: {
+		'cart.add'(target) {
+			this._drop(target);
+		}
+	},
 	components: {
 		shopcart,
-		cartcontrol
+		cartcontrol,
+		food
 	}
 };
 </script>
@@ -252,7 +267,7 @@ export default {
 					.old
 						text-decoration: line-through
 						font-size: 10px
-						color: rgb(147, 153, 159)			
+						color: rgb(147, 153, 159)
 				.cartcontrol-wrapper  //for cartcontrol.vue
 					position: absolute
 					right: 0

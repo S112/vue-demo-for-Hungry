@@ -1,16 +1,17 @@
 <template>
 <div class='cartcontrol'>
-	<div class='cart-decrease ' v-show='food.count>0' @click='decreaseCart($event)' transition='move'>
+	<div class='cart-decrease' v-show='food.count>0' @click.stop.prevent='decreaseCart($event)' transition='move'>
 		<span class='inner icon-remove_circle_outline'></span>
 	</div>
-	<div class='cart-count' v-show='food.count>0' v-text='food.count'>	</div>
-	<div class='cart-add icon-add_circle' @click='addCart($event)'></div>
+	<div class='cart-count' v-show='food.count>0' v-text='food.count'></div>
+	<div class='cart-add icon-add_circle' @click.stop.prevent='addCart($event)'></div>
 </div>
 </template>
 
 <script type="text/ecmascript-6">
 import Vue from 'vue';
 export default {
+	name: 'cartcontrol',
 	created() {
 		// console.log(JSON.parse(JSON.stringify(this.food)));
 	},
@@ -29,7 +30,7 @@ export default {
 			} else {
 				this.food.count++;
 			}
-			this.$parent.$emit('cart.add', event.target);
+			this.$dispatch('cart.add', event.target);
 		},
 		decreaseCart(event) {
 			if (!event._constructed) {  // 解决pc端点击出现两次bug,_constructed是better-scroll自带的,原生不存在

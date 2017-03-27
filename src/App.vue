@@ -13,21 +13,26 @@
     </div>      
   </div>
 
-  <router-view :seller='seller'></router-view>
+  <router-view :seller='seller' keep-alive></router-view>
 </div>
 </template>
 
 <script type="text/ecmascript-6">
 import header from 'components/header/header';
-import {axios} from './global.js';
+import {axios} from 'common/js/global';
+import {urlParse} from 'common/js/ultis';
 const ERR_OK = 0;
 
 export default {
   created() {
-    axios.get('api/seller', {
+    axios.get(`api/seller?id=${this.seller.id}`, {
     }).then((rsp) => {
       if (rsp.errno === ERR_OK) {
-        this.seller = rsp.data;
+        // console.log(this.seller.id);
+        // console.log(JSON.parse(JSON.stringify(this.seller)));
+        this.seller = Object.assign({}, this.seller, rsp.data);
+        // console.log(this.seller.id);
+        // console.log(JSON.parse(JSON.stringify(this.seller)));
       }
     }, (err) => {
       console.log(err);
@@ -36,6 +41,11 @@ export default {
   data() {
     return {
       seller: {
+        id: (() => {
+          urlParse();
+          let queryParam = urlParse();
+          return queryParam.id;
+        })()
       }
     };
   },

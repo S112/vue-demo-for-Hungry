@@ -214,7 +214,7 @@ export default {
 	//浮层 detail
 	.detail
 		position: fixed
-		z-index: 1
+		z-index: 60
 		top: 0
 		left: 0
 		width: 100%

@@ -284,7 +284,7 @@ export default {
 				vertical-align: top
 				margin: 12px 0 0 12px
 				line-height: 24px
-				font-size: 16px
+				font-size: 12px
 		.content-right
 			flex: 0 0 105px
 			width: 105px
